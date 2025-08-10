@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Green Habit Tracker — Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>🌱 Green Habit Tracker</h1>
+    <p class="subtitle">Build small green habits — get rewards for completing daily tasks.</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div id="authBox"></div>
+      <div id="appBox" style="display:none;">
+        <h2>Task of the Day</h2>
+        <p id="task">Loading...</p>
+        <label class="checkbox-label">
+          <input type="checkbox" id="taskDone"> Task Done
+        </label>
+        <div class="actions">
+          <button id="saveBtn">Save Task</button>
+        </div>
+        <p id="status" class="status"></p>
+      </div>
+    </section>
+
+    <nav class="nav">
+      <a href="streak.html">📊 View Streak</a>
+      <a href="tips.html">💡 Eco Tips</a>
+      <a href="rewards.html">🏆 Rewards</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <small>Made with ♻️ · Green Habit Tracker</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Setup actions after DOM loaded
+    window.addEventListener('DOMContentLoaded', async () => {
+      await initAuth();
+      document.getElementById('saveBtn').addEventListener('click', async () => {
+        await saveTask();
+      });
+    });
+  </script>
+</body>
+</html>

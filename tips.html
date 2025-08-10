@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Eco Tips</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <header class="site-header"><h1>💡 Eco Tip of the Day</h1><p class="subtitle">Small tips that help the planet</p></header>
+  <main class="container">
+    <section class="card">
+      <p id="ecoTip" class="tip">Loading...</p>
+      <div class="actions"><button id="newTip">Show another tip</button></div>
+    </section>
+    <nav class="nav"><a href="/">🏠 Home</a><a href="streak.html">📊 View Streak</a><a href="rewards.html">🏆 Rewards</a></nav>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', async ()=>{
+      const res = await fetch('/api/me');
+      const me = await res.json();
+      if (!me.loggedIn) return window.location.href = '/login.html';
+      await loadEcoTip();
+      document.getElementById('newTip').addEventListener('click', loadEcoTip);
+    });
+  </script>
+</body>
+</html>

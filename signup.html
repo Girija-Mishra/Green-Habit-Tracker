@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Sign up</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <main class="container">
+    <section class="card" style="max-width:420px;margin:30px auto">
+      <h2>Create account</h2>
+      <form id="signupForm">
+        <label>Username<br><input name="username" required></label><br><br>
+        <label>Password<br><input name="password" type="password" required></label><br><br>
+        <button type="submit">Sign up</button>
+      </form>
+      <p class="status" id="signupStatus"></p>
+      <p>Already have account? <a href="login.html">Login</a></p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = { username: fd.get('username'), password: fd.get('password') };
+      const res = await fetch('/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (res.ok) {
+        window.location.href = '/';
+      } else {
+        document.getElementById('signupStatus').innerText = data.error || 'Signup failed';
+      }
+    });
+  </script>
+</body>
+</html>

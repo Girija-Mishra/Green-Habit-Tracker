@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Login</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <main class="container">
+    <section class="card" style="max-width:420px;margin:30px auto">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label>Username<br><input name="username" required></label><br><br>
+        <label>Password<br><input name="password" type="password" required></label><br><br>
+        <button type="submit">Login</button>
+      </form>
+      <p class="status" id="loginStatus"></p>
+      <p>Don't have account? <a href="signup.html">Sign up</a></p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = { username: fd.get('username'), password: fd.get('password') };
+      const res = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (res.ok) {
+        window.location.href = '/';
+      } else {
+        document.getElementById('loginStatus').innerText = data.error || 'Login failed';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Streak</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
+<body>
+  <header class="site-header"><h1>📊 Your Streak</h1><p class="subtitle">Last 14 days</p></header>
+  <main class="container">
+    <section class="card">
+      <canvas id="streakChart" height="120"></canvas>
+      <p id="streakSummary" class="status"></p>
+    </section>
+    <nav class="nav"><a href="/">🏠 Home</a><a href="tips.html">💡 Eco Tips</a><a href="rewards.html">🏆 Rewards</a></nav>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+      const res = await fetch('/api/me');
+      const me = await res.json();
+      if (!me.loggedIn) return window.location.href = '/login.html';
+      const r = await fetch('/api/streak?days=14');
+      const data = await r.json();
+      const ctx = document.getElementById('streakChart').getContext('2d');
+      new Chart(ctx, {
+        type:'bar',
+        data:{ labels: data.labels, datasets:[{ label:'Done', data: data.values, backgroundColor: data.values.map(v=> v? 'rgba(27,122,58,0.85)':'rgba(27,122,58,0.15)') }]},
+        options:{ scales:{ y:{ ticks:{ stepSize:1, beginAtZero:true, max:1 } } }, plugins:{ legend:{ display:false } } }
+      });
+      const currentStreak = data.values.slice().reverse().findIndex(v=> v===0);
+      const streak = currentStreak === -1 ? data.values.length : currentStreak;
+      document.getElementById('streakSummary').innerText = `Current streak: ${streak} day(s)`;
+    });
+  </script>
+</body>
+</html>

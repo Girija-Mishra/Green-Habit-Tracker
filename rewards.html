@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Rewards</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <header class="site-header"><h1>🏆 Rewards Earned</h1><p class="subtitle">Rewards are granted only when you complete the Task of the Day.</p></header>
+  <main class="container">
+    <section class="card">
+      <ul id="rewardsList" class="rewards-list"><li>Loading...</li></ul>
+      <p id="totalRewards" class="status"></p>
+      <div class="actions"><button id="logoutBtn">Logout</button></div>
+    </section>
+    <nav class="nav"><a href="/">🏠 Home</a><a href="streak.html">📊 View Streak</a><a href="tips.html">💡 Eco Tips</a></nav>
+  </main>
+  <script src="script.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', async ()=>{
+      const res = await fetch('/api/me');
+      const me = await res.json();
+      if (!me.loggedIn) return window.location.href = '/login.html';
+      await loadRewards();
+      document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+        await fetch('/api/logout', { method:'POST' });
+        window.location.href = '/login.html';
+      });
+    });
+  </script>
+</body>
+</html>
